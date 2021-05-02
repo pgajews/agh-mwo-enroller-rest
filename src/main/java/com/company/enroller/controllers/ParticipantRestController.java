@@ -48,10 +48,24 @@ public class ParticipantRestController {
 	public ResponseEntity<?> deleteParticipant(@PathVariable("id") String login) {
 		Participant participant = participantService.findByLogin(login);
 		if (participant == null) {
-			return new ResponseEntity<String>("Participant with login \"" + login
+			return new ResponseEntity<>("Participant with login \"" + login
 					+ "\" doesn't exist", HttpStatus.CONFLICT);
 		}
 		participantService.delete(participant);
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateParticipant(@PathVariable("id") String login, @RequestBody Participant participant) {
+		Participant foundParticipant = participantService.findByLogin(login);
+		if (foundParticipant == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		String newPassword = participant.getPassword();
+		if (newPassword == null || newPassword.equals("")) {
+			return new ResponseEntity<>("New password can't be empty", HttpStatus.FORBIDDEN);
+		}
+		participantService.update(participant);
+		return new ResponseEntity<>(foundParticipant, HttpStatus.OK);
 	}
 }

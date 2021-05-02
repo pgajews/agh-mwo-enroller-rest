@@ -40,4 +40,10 @@ public class ParticipantService {
 		session.delete(participant);
 		transaction.commit();
 	}
+
+	public void update(Participant participant) {
+		Transaction transaction = session.beginTransaction();
+		session.merge(participant);
+		transaction.commit();
+	}
 }
