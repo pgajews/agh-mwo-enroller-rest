@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,12 +27,15 @@ public class Meeting {
 	private long id;
 
 	@Column
+	@NotEmpty
 	private String title;
 
 	@Column
+	@NotEmpty
 	private String description;
 
 	@Column
+	@NotEmpty
 	private String date;
 
 	@JsonIgnore
@@ -75,9 +79,16 @@ public class Meeting {
 	public void addParticipant(Participant participant) {
 		this.participants.add(participant);
 	}
+	public void addParticipants(Collection<Participant> participants) {
+		this.participants.addAll(participants);
+	}
 
 	public void removeParticipant(Participant participant) {
 		this.participants.remove(participant);
+	}
+
+	public void removeParticipants(Collection<Participant> participants) {
+		this.participants.removeAll(participants);
 	}
 
 	public Collection<Participant> getParticipants() {
